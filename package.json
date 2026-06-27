@@ -1,0 +1,14 @@
+{
+  "name": "chitkara-fullstack-challenge",
+  "version": "1.0.0",
+  "description": "Chitkara Full Stack Engineering Challenge",
+  "main": "Index.js",
+  "scripts": {
+    "start": "node Index.js",
+    "dev": "node Index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

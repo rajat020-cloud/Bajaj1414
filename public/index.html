@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chitkara Graph API and Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-icon">
+          <i class="fa-solid fa-diagram-project"></i>
+        </div>
+        <div>
+          <h1>Graph Hierarchy Portal</h1>
+          <p class="subtitle">Chitkara REST API and Hierarchy Processor</p>
+        </div>
+      </div>
+      <div class="user-meta" id="header-credentials">
+        <span class="user-id-badge"><i class="fa-solid fa-user"></i> rajat_27062026</span>
+        <span class="roll-badge"><i class="fa-solid fa-id-card"></i> 21CS1001</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main container">
+    <div class="dashboard-grid">
+      <section class="panel-card input-panel">
+        <div class="panel-header">
+          <i class="fa-solid fa-code-merge panel-icon"></i>
+          <h2>Input Relationships</h2>
+        </div>
+        <p class="panel-description">
+          Provide your graph edges below as a JSON array (e.g. <code>["A->B", "A->C"]</code>) or comma-separated pairs.
+        </p>
+        
+        <div class="textarea-container">
+          <textarea id="edges-input" placeholder='["A->B", "A->C", "B->D"]'></textarea>
+          <div class="input-actions">
+            <button id="btn-format" class="btn btn-secondary btn-xs">
+              <i class="fa-solid fa-align-left"></i> Format JSON
+            </button>
+            <button id="btn-clear" class="btn btn-secondary btn-xs">
+              <i class="fa-solid fa-trash-can"></i> Clear
+            </button>
+          </div>
+        </div>
+
+        <div class="presets-section">
+          <label>Examples</label>
+          <div class="preset-buttons">
+            <button class="btn btn-secondary btn-sm preset-btn" data-preset="challenge">Challenge Case</button>
+            <button class="btn btn-secondary btn-sm preset-btn" data-preset="diamond">Diamond Case</button>
+            <button class="btn btn-secondary btn-sm preset-btn" data-preset="cycle">Cycle Case</button>
+          </div>
+        </div>
+
+        <button id="btn-submit" class="btn btn-primary btn-block">
+          <span>Process Graph Data</span>
+          <i class="fa-solid fa-arrow-right"></i>
+          <span class="spinner hidden" id="submit-spinner"></span>
+        </button>
+
+        <div id="error-banner" class="error-banner hidden">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span id="error-message"></span>
+        </div>
+      </section>
+
+      <section class="panel-card output-panel">
+        <div class="output-tabs">
+          <button class="tab-btn active" data-tab="visual">
+            <i class="fa-solid fa-network-wired"></i> Visual Tree
+          </button>
+          <button class="tab-btn" data-tab="json">
+            <i class="fa-solid fa-code"></i> JSON Data
+          </button>
+        </div>
+
+        <div class="tab-content" id="tab-visual">
+          <div class="empty-state" id="visual-empty">
+            <div class="empty-icon">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h3>No Data Processed</h3>
+            <p>Input graph edges and click submit to analyze relationships.</p>
+          </div>
+
+          <div id="visual-results" class="hidden">
+            <div class="stats-grid">
+              <div class="stat-box count-trees">
+                <div class="stat-header">
+                  <span>Trees</span>
+                  <i class="fa-solid fa-tree text-success"></i>
+                </div>
+                <div class="stat-value" id="stat-trees">0</div>
+              </div>
+              <div class="stat-box count-cycles">
+                <div class="stat-header">
+                  <span>Cycles</span>
+                  <i class="fa-solid fa-arrows-spin text-warning"></i>
+                </div>
+                <div class="stat-value" id="stat-cycles">0</div>
+              </div>
+              <div class="stat-box largest-root">
+                <div class="stat-header">
+                  <span>Largest Root</span>
+                  <i class="fa-solid fa-crown text-info"></i>
+                </div>
+                <div class="stat-value" id="stat-largest-root">-</div>
+              </div>
+            </div>
+
+            <div class="results-section">
+              <h3>Hierarchies</h3>
+              <div id="hierarchies-container" class="hierarchies-container"></div>
+            </div>
+
+            <div class="logs-grid">
+              <div class="log-card invalid-logs">
+                <h4><i class="fa-solid fa-ban text-danger"></i> Invalid Entries (<span id="count-invalid">0</span>)</h4>
+                <div id="invalid-entries-list" class="badge-list"></div>
+              </div>
+              <div class="log-card duplicate-logs">
+                <h4><i class="fa-solid fa-clone text-orange"></i> Duplicate Edges (<span id="count-duplicates">0</span>)</h4>
+                <div id="duplicate-edges-list" class="badge-list"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content hidden" id="tab-json">
+          <div class="json-container">
+            <button id="btn-copy-json" class="btn btn-secondary btn-xs copy-btn">Copy JSON</button>
+            <pre><code id="json-output"></code></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container footer-content">
+      <p>© 2026 Chitkara Engineering Challenge</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
